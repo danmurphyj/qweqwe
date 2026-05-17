@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEERMAN — The Drunken Hero of Crypto</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;600;700&family=Roboto:wght@400;500&display=swap');
+
+  :root {
+    --gold: #FFD700;
+    --amber: #FF8C00;
+    --dark: #0a0a0f;
+    --darker: #05050a;
+    --foam: #FFF8E7;
+    --red: #CC2200;
+    --green: #00FF88;
+    --panel: #12121e;
+    --border: rgba(255,215,0,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--darker);
+    color: var(--foam);
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ===== COMIC DOTS BACKGROUND ===== */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,215,0,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(5,5,10,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 2px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-ticker {
+    font-family: 'Bangers', cursive;
+    font-size: 1.9rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 18px rgba(255,215,0,0.6), 3px 3px 0 #8B4513;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .nav-ticker span.badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: var(--red);
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    animation: pulseBadge 2s infinite;
+  }
+
+  @keyframes pulseBadge {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .btn-buy {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    color: #1a0a00;
+    padding: 8px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(255,165,0,0.4), 3px 3px 0 #8B4513;
+    transition: transform 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+  }
+  .btn-buy:hover { transform: translateY(-2px) rotate(-1deg); box-shadow: 0 8px 25px rgba(255,165,0,0.6), 3px 3px 0 #8B4513; }
+
+  .btn-ca {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    max-width: 380px;
+    word-break: break-all;
+    white-space: normal;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-ca:hover { background: rgba(255,215,0,0.1); }
+
+  .social-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s, transform 0.15s;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .social-btn:hover { background: rgba(255,215,0,0.12); transform: translateY(-2px); }
+
+  /* ===== TICKER TAPE ===== */
+  .ticker-tape {
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+    overflow: hidden;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-track {
+    display: flex;
+    animation: tickerScroll 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a0800;
+    padding: 0 2rem;
+    letter-spacing: 1.5px;
+  }
+  .ticker-item::after { content: '🍺'; margin-left: 1rem; }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 2rem;
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-bg-beams {
+    position: absolute; inset: 0;
+    background: conic-gradient(from 180deg at 50% 50%,
+      transparent 0deg, rgba(255,140,0,0.07) 40deg,
+      transparent 80deg, rgba(255,215,0,0.05) 120deg,
+      transparent 160deg, rgba(204,34,0,0.06) 200deg,
+      transparent 240deg, rgba(255,140,0,0.07) 280deg, transparent 360deg);
+    animation: spinBeams 25s linear infinite;
+  }
+  @keyframes spinBeams { to { transform: rotate(360deg); } }
+
+  .hero-content { position: relative; z-index: 2; max-width: 780px; }
+
+  .hero-eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    color: var(--amber);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(5rem, 14vw, 9rem);
+    line-height: 0.9;
+    color: var(--gold);
+    text-shadow:
+      4px 4px 0 #8B4513,
+      8px 8px 0 rgba(139,69,19,0.4),
+      0 0 60px rgba(255,215,0,0.3);
+    letter-spacing: 4px;
+    animation: heroFloat 4s ease-in-out infinite;
+  }
+  @keyframes heroFloat {
+    0%,100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(1deg); }
+  }
+
+  .hero-subtitle {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    letter-spacing: 3px;
+    color: #fff;
+    margin: 0.5rem 0 1.5rem;
+    text-shadow: 2px 2px 0 var(--red);
+  }
+
+  .hero-mascot {
+    font-size: clamp(7rem, 18vw, 13rem);
+    line-height: 1;
+    margin: 1rem 0;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(255,165,0,0.5));
+    animation: mascotWobble 3s ease-in-out infinite;
+    cursor: pointer;
+    user-select: none;
+  }
+  @keyframes mascotWobble {
+    0%,100% { transform: rotate(-3deg) scale(1); }
+    33% { transform: rotate(3deg) scale(1.04); }
+    66% { transform: rotate(-1deg) scale(0.98); }
+  }
+  .hero-mascot:hover { animation: none; transform: rotate(15deg) scale(1.1); transition: transform 0.3s; }
+
+  .hero-powers {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+
+  .power-badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1.5px solid;
+    text-transform: uppercase;
+  }
+  .power-badge.gold { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.08); }
+  .power-badge.red { border-color: var(--red); color: #ff6b6b; background: rgba(204,34,0,0.08); }
+  .power-badge.green { border-color: var(--green); color: var(--green); background: rgba(0,255,136,0.08); }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .btn-hero-primary {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    color: #1a0a00;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 6px 25px rgba(255,165,0,0.5), 4px 4px 0 #8B4513;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: inline-block;
+  }
+  .btn-hero-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 35px rgba(255,165,0,0.7), 4px 4px 0 #8B4513; }
+
+  .btn-hero-secondary {
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-hero-secondary:hover { background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+
+  /* ===== SECTION COMMONS ===== */
+  section { position: relative; z-index: 1; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 5px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 0 #8B4513;
+    line-height: 1;
+  }
+
+  .section-divider {
+    width: 80px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+  }
+
+  /* ===== ABOUT ===== */
+  #about {
+    padding: 6rem 2rem;
+    background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+  }
+
+  .about-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .about-mascot-box {
+    position: relative;
+    text-align: center;
+  }
+
+  .about-mascot-emoji {
+    display: none;
+  }
+
+  .about-mascot-img {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    border-radius: 20px;
+    filter: drop-shadow(0 0 40px rgba(255,165,0,0.45));
+    animation: aboutFloat 5s ease-in-out infinite;
+  }
+
+  @keyframes aboutFloat {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  .comic-burst {
+    position: absolute;
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    background: var(--red);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-shadow: none;
+    box-shadow: 3px 3px 0 #660000;
+    transform: rotate(-8deg);
+    top: 10%;
+    right: 0;
+    animation: burstPop 3s ease-in-out infinite;
+  }
+  @keyframes burstPop {
+    0%,100% { transform: rotate(-8deg) scale(1); }
+    50% { transform: rotate(-8deg) scale(1.07); }
+  }
+
+  .about-text { }
+
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255,248,231,0.85);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong {
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1;
+    min-width: 110px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .stat-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .powers-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .power-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: rgba(255,248,231,0.8);
+  }
+
+  .power-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  /* ===== TOKENOMICS ===== */
+  #tokenomics {
+    padding: 5rem 2rem;
+    background: var(--darker);
+  }
+
+  .tokenomics-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .token-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .token-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .token-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .token-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+  }
+
+  .token-card-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .token-card-value {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .token-card-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .distribution-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dist-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .dist-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--foam);
+    width: 160px;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .dist-bar-wrap {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    height: 22px;
+    overflow: hidden;
+  }
+
+  .dist-bar {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+    position: relative;
+    transition: width 1.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+  }
+  .dist-bar span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #1a0800;
+  }
+
+  /* ===== GALLERY ===== */
+  #gallery {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, var(--darker) 0%, #0d0d18 100%);
+    overflow: hidden;
+  }
+
+  .gallery-header { padding: 0 2rem; }
+
+  .carousel-wrapper {
+    position: relative;
+    margin-top: 2rem;
+    cursor: grab;
+    user-select: none;
+    padding: 1rem 0 2rem;
+  }
+  .carousel-wrapper:active { cursor: grabbing; }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: none;
+    will-change: transform;
+    padding: 10px 20px;
+  }
+
+  .carousel-slide {
+    flex-shrink: 0;
+    width: 380px;
+    height: 440px;
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    background: var(--panel);
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .carousel-slide:hover { border-color: var(--gold); transform: scale(1.02); }
+
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .slide-inner {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .slide-emoji { font-size: 7rem; filter: drop-shadow(0 0 20px rgba(255,165,0,0.4)); }
+  .slide-title {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-align: center;
+    text-shadow: 2px 2px 0 #8B4513;
+  }
+  .slide-desc {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: var(--amber);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .slide-bg-1 { background: radial-gradient(ellipse at center, #1a0e00 0%, #0a0508 100%); }
+  .slide-bg-2 { background: radial-gradient(ellipse at center, #0d1a00 0%, #050a0a 100%); }
+  .slide-bg-3 { background: radial-gradient(ellipse at center, #1a0000 0%, #0a0505 100%); }
+  .slide-bg-4 { background: radial-gradient(ellipse at center, #000d1a 0%, #050508 100%); }
+  .slide-bg-5 { background: radial-gradient(ellipse at center, #1a1400 0%, #0a0a05 100%); }
+
+  .carousel-hint {
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: rgba(255,215,0,0.4);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  /* ===== HOW TO BUY ===== */
+  #howToBuy {
+    padding: 6rem 2rem;
+    background: var(--dark);
+  }
+
+  .steps-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  .step-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .step-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+
+  .step-number {
+    font-family: 'Bangers', cursive;
+    font-size: 3.5rem;
+    color: rgba(255,215,0,0.12);
+    position: absolute;
+    top: -10px; right: 10px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .step-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+  .step-title {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 0.75rem;
+    text-shadow: 2px 2px 0 #8B4513;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255,248,231,0.75);
+  }
+
+  .step-desc code {
+    font-family: monospace;
+    font-size: 1rem;
+    background: rgba(255,215,0,0.1);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--gold);
+    word-break: break-all;
+  }
+
+  .buy-cta-wrap {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  /* ===== LORE / STORY ===== */
+  #lore {
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+  }
+
+  .lore-inner {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .lore-comic {
+    background: var(--panel);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lore-comic::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,215,0,0.025) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .lore-para {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: rgba(255,248,231,0.85);
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lore-para strong { color: var(--gold); font-family: 'Oswald', sans-serif; font-weight: 700; }
+  .lore-quote {
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-align: center;
+    margin: 1.5rem 0;
+    text-shadow: 2px 2px 0 #8B4513;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--darker);
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand .nav-ticker { font-size: 2.2rem; margin-bottom: 0.5rem; }
+
+  .footer-tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .footer-links a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    color: rgba(255,248,231,0.6);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-socials { display: flex; gap: 0.75rem; }
+  .footer-social-btn {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .footer-social-btn:hover { background: rgba(255,215,0,0.12); transform: translateY(-2px); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: rgba(255,248,231,0.35);
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  .footer-disclaimer {
+    font-size: 0.75rem;
+    color: rgba(255,248,231,0.3);
+    max-width: 500px;
+    line-height: 1.5;
+    text-align: right;
+  }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    #hero { background-image: url('bg-mobile.png'); background-position: center top; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-mascot-box { order: -1; }
+    .about-mascot-emoji { font-size: 7rem; }
+    .nav-cta .btn-ca { display: none; }
+    .footer-disclaimer { text-align: left; }
+    .carousel-slide { width: 300px; height: 360px; }
+    .slide-emoji { font-size: 5rem; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 0 1rem; }
+    .nav-ticker { font-size: 1.5rem; }
+    .btn-buy { font-size: 0.9rem; padding: 7px 14px; }
+  }
+
+  /* ===== FLYING IMAGE OVERLAY ===== */
+  #flyingChar {
+    position: fixed;
+    top: 35%;
+    left: 0;
+    width: clamp(200px, 25vw, 480px);
+    height: auto;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyAcross 7s ease-in-out infinite;
+  }
+
+  @keyframes flyAcross {
+    0%      { transform: translateX(-140px); opacity: 0; }
+    5%      { opacity: 1; }
+    70%     { opacity: 1; }
+    85%     { transform: translateX(calc(100vw + 140px)); opacity: 0; }
+    85.01%  { transform: translateX(-140px); opacity: 0; }
+    100%    { transform: translateX(-140px); opacity: 0; }
+  }
+
+</style>
+</head>
+<body>
+<!-- FLYING CHARACTER -->
+
+
+<!-- TICKER TAPE -->
+<div class="ticker-tape">
+  <div class="ticker-track">
+    <span class="ticker-item">$BEERMAN — JUST A GUY WITH A BEER</span>
+    <span class="ticker-item">COLD BEER COLD WALLET HOT TAKES</span>
+    <span class="ticker-item">FRIDGE FULL. PORTFOLIO EMPTY. VIBES IMMACULATE.</span>
+    <span class="ticker-item">NOT YOUR KEYS NOT YOUR BEER</span>
+    <span class="ticker-item">$BEERMAN — JUST A GUY WITH A BEER</span>
+    <span class="ticker-item">COLD BEER COLD WALLET HOT TAKES</span>
+    <span class="ticker-item">FRIDGE FULL. PORTFOLIO EMPTY. VIBES IMMACULATE.</span>
+    <span class="ticker-item">NOT YOUR KEYS NOT YOUR BEER</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-ticker">
+    🍺 $BEERMAN
+  </div>
+
+  <div class="nav-cta">
+    <a href="javascript:void(0)" class="btn-ca">
+      📋 BeeRmXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX9k2
+    </a>
+    <a href="#howToBuy" class="btn-buy">🍺 BUY NOW</a>
+  </div>
+
+  <div class="social-links">
+    <a href="#" class="social-btn" title="Telegram">TG</a>
+    <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
+    <a href="#" class="social-btn" title="DEXScreener">DEX</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">🍺 Just a Regular Guy With a Fridge Full of Beer 🍺</div>
+    <h1 class="hero-title">BEERMAN</h1>
+    <div class="hero-subtitle">Drinking Beer Since Before You Were Born</div>
+
+
+
+    <div class="hero-buttons">
+      <a href="#howToBuy" class="btn-hero-primary">🍺 BUY $BEERMAN</a>
+      <a href="#about" class="btn-hero-secondary">📖 Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-mascot-box reveal">
+      <!-- ДОБАВЬ ФОТО: положи файл mascot.png рядом с index.html -->
+      <img src="mascot.png" alt="Beerman" class="about-mascot-img">
+    </div>
+    <div class="about-text reveal">
+      <div class="section-header" style="text-align:left; margin-bottom:1.5rem;">
+        <div class="section-label">Who Is This Guy</div>
+        <h2 class="section-title">WHO IS BEERMAN?</h2>
+        <div class="section-divider" style="margin-left:0;"></div>
+      </div>
+      <p>
+        <strong>Beerman</strong> is just a guy. He works, he comes home, he opens a beer. Then another one. Then he checks the charts and opens a third.
+      </p>
+      <p>
+        No cape. No superpowers. Just a <strong>fridge that's always stocked</strong>, a couch with a permanent dent, and an unshakeable belief that crypto will save him from his job someday.
+      </p>
+      <p>
+        A meme coin for people who <strong>don't read whitepapers</strong> but know exactly which store has the cheapest six-pack. Welcome to the community.
+      </p>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value">1B</div>
+          <div class="stat-label">Total Supply</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0%</div>
+          <div class="stat-label">Buy Tax</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0%</div>
+          <div class="stat-label">Sell Tax</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">🔒</div>
+          <div class="stat-label">LP Locked</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header section-header reveal">
+    <div class="section-label">Gallery</div>
+    <h2 class="section-title">THE COUCH CHRONICLES</h2>
+    <div class="section-divider"></div>
+    <p style="color:rgba(255,248,231,0.5); font-size:0.85rem; margin-top:0.75rem; font-family:'Oswald',sans-serif; letter-spacing:1px;">DRAG TO EXPLORE THE COLLECTION</p>
+  </div>
+
+  <div class="carousel-wrapper" id="carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide"><img src="carousel/1.jpg" alt="1"></div>
+      <div class="carousel-slide"><img src="carousel/2.jpg" alt="2"></div>
+      <div class="carousel-slide"><img src="carousel/3.jpg" alt="3"></div>
+      <div class="carousel-slide"><img src="carousel/4.jpg" alt="4"></div>
+      <div class="carousel-slide"><img src="carousel/5.jpg" alt="5"></div>
+      <div class="carousel-slide"><img src="carousel/6.jpg" alt="6"></div>
+      <div class="carousel-slide"><img src="carousel/7.jpg" alt="7"></div>
+      <div class="carousel-slide"><img src="carousel/8.jpg" alt="8"></div>
+    </div>
+  </div>
+  <div class="carousel-hint">← GRAB & DRAG →</div>
+</section>
+
+<!-- HOW TO BUY -->
+<section id="howToBuy">
+  <div class="section-header reveal">
+    <div class="section-label">How to Buy</div>
+    <h2 class="section-title">GET $BEERMAN</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-number">01</div>
+      <span class="step-icon">👛</span>
+      <div class="step-title">GET A WALLET</div>
+      <div class="step-desc">Download <strong>Phantom</strong> or <strong>Solflare</strong>. Write down your seed phrase. Hide it somewhere your wife won't find it.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">02</div>
+      <span class="step-icon">💳</span>
+      <div class="step-title">GET SOME SOL</div>
+      <div class="step-desc">Buy <strong>SOL</strong> on Coinbase, Binance, or Kraken. Transfer it to your wallet. Gas fees are cheaper than a six-pack, so no excuses.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">03</div>
+      <span class="step-icon">🔄</span>
+      <div class="step-title">GO TO PUMP.FUN</div>
+      <div class="step-desc">Open <strong>Pump.fun</strong> or <strong>Jupiter.ag</strong>. Connect your wallet. Put the phone down for a second and read the screen.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">04</div>
+      <span class="step-icon">🍺</span>
+      <div class="step-title">BUY $BEERMAN</div>
+      <div class="step-desc">Paste the contract address:<br><code class="copy-ca" title="Click to copy">BeeRmXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX9k2</code><br>Set slippage to 5-10%, hit swap, crack open a beer. You're done.</div>
+    </div>
+  </div>
+
+  <div class="buy-cta-wrap reveal">
+    <a href="#" class="btn-hero-primary" style="font-size:1.6rem;">🍺 BUY $BEERMAN NOW</a>
+    <p class="copy-ca" title="Click to copy" style="margin-top:1rem; font-family:'Oswald',sans-serif; font-size:1rem; letter-spacing:1px; color:rgba(255,248,231,0.5); text-transform:uppercase; cursor:pointer; word-break:break-all;">Contract: BeeRmXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX9k2</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-ticker">🍺 $BEERMAN</div>
+        <div class="footer-tagline">Just a Guy, a Beer, and a Dream</div>
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#howToBuy">How to Buy</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-btn" title="Telegram">TG</a>
+        <a href="#" class="footer-social-btn" title="Twitter/X">𝕏</a>
+        <a href="#" class="footer-social-btn" title="DEXScreener">DEX</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 BEERMAN. All rights reserved. He was going to read them but there was a beer in the way.</div>
+      <div class="footer-disclaimer">$BEERMAN is a meme coin. Not financial advice. Not any kind of advice. Do your own research. Never invest more than the price of a cold one.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== INFINITE DRAG CAROUSEL =====
+const wrapper = document.getElementById('carousel');
+const track = document.getElementById('carouselTrack');
+
+const slides = Array.from(track.children);
+const slideWidth = slides[0].offsetWidth + 20; // width + gap
+const totalWidth = slideWidth * slides.length;
+
+// Clone all slides for infinite loop
+slides.forEach(slide => {
+  const clone = slide.cloneNode(true);
+  track.appendChild(clone);
+});
+
+let pos = 0;
+let vel = 0;
+let isDown = false;
+let startX = 0;
+let lastX = 0;
+let lastTime = 0;
+let animId = null;
+let autoId = null;
+const AUTO_SPEED = 0.4; // px per frame
+
+function clampPos() {
+  if (pos <= -totalWidth) pos += totalWidth;
+  if (pos >= 0) pos -= totalWidth;
+}
+
+function render() {
+  track.style.transform = `translateX(${pos}px)`;
+}
+
+function autoScroll() {
+  if (!isDown) {
+    pos -= AUTO_SPEED;
+    clampPos();
+    render();
+  }
+  autoId = requestAnimationFrame(autoScroll);
+}
+
+autoId = requestAnimationFrame(autoScroll);
+
+// Mouse
+wrapper.addEventListener('mousedown', e => {
+  isDown = true;
+  startX = e.clientX;
+  lastX = e.clientX;
+  lastTime = Date.now();
+  vel = 0;
+  cancelAnimationFrame(animId);
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', e => {
+  if (!isDown) return;
+  const dx = e.clientX - lastX;
+  pos += dx;
+  clampPos();
+  render();
+  const now = Date.now();
+  const dt = now - lastTime || 1;
+  vel = dx / dt * 16;
+  lastX = e.clientX;
+  lastTime = now;
+});
+
+document.addEventListener('mouseup', () => {
+  if (!isDown) return;
+  isDown = false;
+  startMomentum();
+});
+
+// Touch
+wrapper.addEventListener('touchstart', e => {
+  isDown = true;
+  startX = e.touches[0].clientX;
+  lastX = startX;
+  lastTime = Date.now();
+  vel = 0;
+  cancelAnimationFrame(animId);
+}, { passive: true });
+
+wrapper.addEventListener('touchmove', e => {
+  if (!isDown) return;
+  const dx = e.touches[0].clientX - lastX;
+  pos += dx;
+  clampPos();
+  render();
+  const now = Date.now();
+  const dt = now - lastTime || 1;
+  vel = dx / dt * 16;
+  lastX = e.touches[0].clientX;
+  lastTime = now;
+}, { passive: true });
+
+wrapper.addEventListener('touchend', () => {
+  isDown = false;
+  startMomentum();
+});
+
+function startMomentum() {
+  cancelAnimationFrame(animId);
+  function loop() {
+    if (Math.abs(vel) > 0.3) {
+      pos += vel;
+      vel *= 0.94;
+      clampPos();
+      render();
+      animId = requestAnimationFrame(loop);
+    }
+  }
+  animId = requestAnimationFrame(loop);
+}
+
+// ===== SCROLL REVEAL =====
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+// ===== MASCOT CLICK EASTER EGG =====
+const mascot = document.querySelector('.hero-mascot');
+const sounds = ['🍺 CHEERS!', '💎 DIAMOND HANDS!', '🚀 TO THE MOON!', '⚡ HOPS POWER!', '🎉 LFG!!!'];
+let sIdx = 0;
+mascot && mascot.addEventListener('click', () => {
+  const burst = document.createElement('div');
+  burst.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:Bangers,cursive;font-size:3rem;color:#FFD700;text-shadow:3px 3px 0 #8B4513;z-index:9999;pointer-events:none;letter-spacing:3px;transition:all 0.5s ease;';
+  burst.textContent = sounds[sIdx % sounds.length];
+  document.body.appendChild(burst);
+  requestAnimationFrame(() => {
+    burst.style.transform = 'translate(-50%,-50%) scale(1)';
+    burst.style.opacity = '1';
+  });
+  setTimeout(() => {
+    burst.style.opacity = '0';
+    burst.style.transform = 'translate(-50%,-120%) scale(0.5)';
+    setTimeout(() => burst.remove(), 500);
+  }, 800);
+  sIdx++;
+});
+
+// ===== CA COPY =====
+const CA_ADDRESS = 'BeeRmXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX9k2';
+
+document.querySelectorAll('.btn-ca, .copy-ca').forEach(el => {
+  el.style.cursor = 'pointer';
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(CA_ADDRESS).catch(() => {});
+    const orig = el.textContent;
+    el.textContent = '✅ Copied!';
+    setTimeout(() => el.textContent = orig, 2000);
+  });
+});
+</script>
+</body>
+</html>
